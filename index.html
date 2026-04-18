@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Quick Data — LinkedIn Viral Post Dashboard</title>
+<title>Quick Data — Social Media Performance Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
       <div class="brand-logo" aria-hidden="true">in</div>
       <div class="brand-text">
         <div class="brand-title">Quick Data</div>
-        <div class="brand-sub">LinkedIn viral post analyser</div>
+        <div class="brand-sub">Social media performance dashboard</div>
       </div>
     </div>
     <nav class="topbar-nav">
@@ -34,16 +34,16 @@
 
   <section id="upload" class="card upload-card">
     <div class="upload-text">
-      <h1>Drop in your LinkedIn CSV</h1>
-      <p>Export your posts from LinkedIn (or your scheduling tool) and drag the CSV here. Everything runs in your browser — nothing is uploaded anywhere.</p>
-      <p class="muted small">Expected columns (auto-detected): post text/commentary, date, likes, comments, reposts/shares, impressions, post URL.</p>
+      <h1>Drop in your data export</h1>
+      <p>Drag in an Excel file (<code>.xlsx</code>) or CSV. Works with multi-sheet exports — pick the sheet you want to analyse and the dashboard will adapt to its shape. Everything runs in your browser; nothing is uploaded anywhere.</p>
+      <p class="muted small">Auto-detects LinkedIn post-level data, daily aggregates, individual creator data, and most social CSV exports. Column names are matched flexibly.</p>
     </div>
     <label class="dropzone" id="dropzone">
-      <input type="file" id="fileInput" accept=".csv,text/csv" hidden />
+      <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
       <div class="dz-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="m6 10 6-6 6 6"/><path d="M4 20h16"/></svg>
       </div>
-      <div class="dz-title">Drag &amp; drop CSV here</div>
+      <div class="dz-title">Drag &amp; drop XLSX or CSV</div>
       <div class="dz-sub">or click to browse</div>
       <div class="dz-actions">
         <button type="button" class="btn btn-secondary" id="loadSampleBtn">Load sample data</button>
@@ -51,55 +51,22 @@
     </label>
   </section>
 
+  <section id="sheetPicker" class="card sheet-picker" hidden>
+    <div class="sp-head">
+      <div>
+        <h2>Sheets in this file</h2>
+        <div class="muted small" id="sheetCount"></div>
+      </div>
+      <div class="sp-active muted small" id="sheetActive"></div>
+    </div>
+    <div id="sheetTabs" class="sheet-tabs"></div>
+  </section>
+
   <div id="results" hidden>
 
-    <section id="overview" class="kpi-row">
-      <div class="card kpi"><div class="kpi-label">Total posts</div><div class="kpi-value" id="kpiTotal">—</div></div>
-      <div class="card kpi"><div class="kpi-label">Viral posts <span class="kpi-hint">(top 20%)</span></div><div class="kpi-value" id="kpiViral">—</div></div>
-      <div class="card kpi"><div class="kpi-label">Avg engagement</div><div class="kpi-value" id="kpiAvg">—</div></div>
-      <div class="card kpi"><div class="kpi-label">Top topic</div><div class="kpi-value" id="kpiTopTopic">—</div></div>
-    </section>
+    <section id="overview" class="kpi-row"></section>
 
-    <section class="grid-2">
-      <div class="card">
-        <div class="card-head">
-          <h2>Engagement over time</h2>
-          <div class="muted small">Daily total engagement across all posts</div>
-        </div>
-        <canvas id="chartTimeline" height="120"></canvas>
-      </div>
-      <div class="card">
-        <div class="card-head">
-          <h2>Top topics by engagement</h2>
-          <div class="muted small">Discovered from your post text</div>
-        </div>
-        <canvas id="chartTopics" height="120"></canvas>
-      </div>
-    </section>
-
-    <section id="topics" class="card">
-      <div class="card-head">
-        <h2>Topic clusters</h2>
-        <div class="muted small">Your posts grouped by what they're actually about. Click a cluster to see the posts.</div>
-      </div>
-      <div id="clusters" class="clusters"></div>
-    </section>
-
-    <section id="why" class="card">
-      <div class="card-head">
-        <h2>Why your viral posts worked</h2>
-        <div class="muted small">Patterns we detected across your top-performing posts versus the rest.</div>
-      </div>
-      <div id="whyGrid" class="why-grid"></div>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <h2>Top 10 viral posts</h2>
-        <div class="muted small">Sorted by engagement score</div>
-      </div>
-      <div id="topPosts" class="posts-list"></div>
-    </section>
+    <div id="reportBody"></div>
 
   </div>
 
@@ -109,6 +76,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="app.js"></script>
 </body>

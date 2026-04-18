@@ -1,36 +1,45 @@
-# Quick Data — LinkedIn viral post dashboard
+# Quick Data — social media performance dashboard
 
-A static, browser-only dashboard that takes a CSV of your LinkedIn posts and tells you:
+A static, browser-only dashboard that takes a social media data export (CSV or multi-sheet XLSX) and produces a report:
 
-- Which posts went viral (top 20% by engagement)
-- What topics they cluster into
-- Which patterns the viral posts share (length, hooks, hashtags, lists, day-of-week)
-- The top 10 highest-engagement posts
+- KPIs: posts, total impressions, total engagement, viral count, averages
+- Topic clusters discovered from post text (when available)
+- Patterns behind viral posts (length, hooks, hashtags, lists, day-of-week)
+- Top 10 posts by engagement (or impressions)
+- People leaderboard (when there's an author / individual column)
+- Daily timeline for aggregate sheets
 
-Everything runs locally in your browser — your CSV is never uploaded anywhere.
+Everything runs locally in your browser — your file is never uploaded anywhere.
 
 ## How to use
 
-1. Open the live site (GitHub Pages link in repo settings) **or** open `index.html` directly in a browser.
-2. Click **Load sample data** to see how it works, or drag your own CSV onto the upload zone.
-3. Scroll through the dashboard.
+1. Open the live site **or** open `index.html` directly in a browser.
+2. Click **Load sample data** to see how it works, or drag in your own CSV / XLSX export.
+3. If your file has multiple sheets (e.g. an XLSX SharePoint archive), use the sheet picker at the top to switch between them. The dashboard adapts to the shape of each sheet.
 
-## CSV format
+## Supported inputs
 
-Column names are auto-detected. Any of these work:
+- **CSV** — any flat post-level export
+- **XLSX** — any Excel workbook, including multi-sheet exports. Each sheet is detected as **post-level**, **daily aggregate**, or **empty**, and the dashboard renders the appropriate view.
+
+## Recognised columns
+
+Column names are matched flexibly. The matcher prefers exact column names but falls back to whole-word matches.
 
 | Field | Recognised column names |
 |---|---|
-| Post text | `Post commentary`, `Post text`, `text`, `content`, `message` |
-| Date | `Date`, `Post date`, `Created`, `Posted at`, `Published` |
-| Likes | `Likes`, `Reactions`, `Total reactions` |
-| Comments | `Comments`, `Comment count` |
-| Reposts | `Reposts`, `Shares` |
-| Impressions | `Impressions`, `Views`, `Reach` |
-| URL | `URL`, `Post URL`, `Link` |
-| Type | `Type`, `Post type` |
+| Post text | `Post commentary`, `Post title`, `Post text`, `Description`, `Content`, `Message`, `Title` |
+| Date | `Post publish date`, `Created date`, `Publish time`, `Posted at`, `Published`, `Date` |
+| Likes | `Likes`, `Reactions`, `Reactions (total)`, `Reactions (organic)`, `LinkedIn reactions` |
+| Comments | `Comments`, `Comments (total)`, `Comments (organic)`, `LinkedIn comments` |
+| Reposts | `Reposts`, `Reposts (total)`, `Reposts (organic)`, `Shares`, `LinkedIn reposts` |
+| Impressions | `Impressions`, `Impressions (total)`, `Impressions (organic)`, `Views`, `Reach` |
+| Engagements | `Engagements`, `Engagement`, `All engagements` |
+| URL | `Post link`, `Post URL`, `Permalink`, `Link` |
+| Author | `Individual`, `Posted by`, `Account name`, `Page name` |
+| Type | `Content type`, `Post type`, `Type` |
 
-Only the post text column is required. Everything else is optional but unlocks more analysis.
+Only the post text column is needed for topic clustering — everything else is optional.
 
 ## Where the analysis comes from
 
@@ -43,5 +52,6 @@ Only the post text column is required. Everything else is optional but unlocks m
 
 - Plain HTML/CSS/JS — no build step
 - [PapaParse](https://www.papaparse.com/) for CSV parsing
+- [SheetJS](https://sheetjs.com/) for XLSX parsing
 - [Chart.js](https://www.chartjs.org/) for charts
 - LinkedIn-inspired styling (Source Sans 3, brand blue `#0A66C2`, surface `#F4F2EE`)
