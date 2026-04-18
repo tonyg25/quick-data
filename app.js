@@ -492,10 +492,11 @@ function renderWhy(viral, rest) {
     const deltaText = it.note
       ? it.restValue
       : (it.delta === 0 ? "Same as the rest" : `${arrow} ${pct(Math.abs(it.delta))}% vs the rest (${it.restValue})`);
+    const detailText = it.note ? it.value : `<strong>${escapeHtml(it.value)}</strong> on viral posts`;
     return `
       <div class="why-item">
         <div class="why-title">${escapeHtml(it.label)}</div>
-        <div class="why-detail"><strong>${escapeHtml(it.value)}</strong> on viral posts</div>
+        <div class="why-detail">${it.note ? `<strong>${escapeHtml(it.value)}</strong>` : detailText}</div>
         <div class="why-delta ${dir}">${escapeHtml(deltaText)}</div>
       </div>
     `;
