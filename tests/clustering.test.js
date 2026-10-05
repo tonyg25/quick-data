@@ -16,13 +16,16 @@ function loadApp() {
 
 test("cluster keywords use the matching TF-IDF vector when blank-text rows are interspersed", () => {
   const context = loadApp();
-  context.posts = [
+  const rows = [
     { i: 0, text: "launch cobalt", engagement: 1 },
+    { i: 1, text: "", engagement: 0 },
     { i: 2, text: "launch titanium", engagement: 1 },
     { i: 3, text: "engine turbine", engagement: 1 },
-    { i: 4, text: "engine valve", engagement: 1 },
-    { i: 5, text: "engine rotor", engagement: 1 },
+    { i: 4, text: "", engagement: 0 },
+    { i: 5, text: "engine valve", engagement: 1 },
+    { i: 6, text: "engine rotor", engagement: 1 },
   ];
+  context.posts = rows.filter(post => post.text);
 
   const clusters = JSON.parse(vm.runInContext(
     "JSON.stringify(clusterByTopTerms(posts, buildTfIdf(posts)))",
