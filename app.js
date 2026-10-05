@@ -353,6 +353,7 @@ function clusterByTopTerms(posts, tfidfData) {
     return best;
   });
 
+  const tfidfByPost = new Map(posts.map((post, i) => [post, tfidf[i]]));
   const groups = new Map();
   posts.forEach((p, i) => {
     const key = assignment[i] || "other";
@@ -365,7 +366,7 @@ function clusterByTopTerms(posts, tfidfData) {
     const avgEng = totalEng / items.length;
     const coTerms = new Map();
     for (const p of items) {
-      const ts = tfidf[p.i];
+      const ts = tfidfByPost.get(p);
       if (!ts) continue;
       for (const [t, s] of ts) {
         if (t === term) continue;
