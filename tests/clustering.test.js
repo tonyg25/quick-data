@@ -1,9 +1,9 @@
-import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import test from "node:test";
-import vm from "node:vm";
+const assert = require("node:assert/strict");
+const { readFileSync } = require("node:fs");
+const test = require("node:test");
+const vm = require("node:vm");
 
-const appSource = readFileSync(new URL("../app.js", import.meta.url), "utf8");
+const appSource = readFileSync(new URL("../app.js", `file://${__filename}`), "utf8");
 
 function loadApp() {
   const element = { addEventListener() {} };
